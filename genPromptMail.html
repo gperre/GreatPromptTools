@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'emails professionnels - SOGET</title>
+    <style>
+        :root {
+            --soget-blue: #0050A0;
+            --soget-light-blue: #E6F0FA;
+            --soget-gray: #58595B;
+            --soget-light-gray: #F5F5F5;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: var(--soget-gray);
+        }
+        
+        header {
+            background-color: var(--soget-blue);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: var(--soget-blue);
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--soget-gray);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--soget-gray);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: var(--soget-blue);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #003d7a;
+        }
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--soget-light-blue);
+            border-radius: 4px;
+            border-left: 4px solid var(--soget-blue);
+        }
+        
+        .result pre {
+            white-space: pre-wrap;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            color: var(--soget-gray);
+        }
+        
+        .copy-btn {
+            margin-top: 1rem;
+            background-color: var(--soget-gray);
+        }
+        
+        .copy-btn:hover {
+            background-color: #444;
+        }
+        
+        footer {
+            background-color: var(--soget-light-gray);
+            padding: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--soget-gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img class="logo" src="/api/placeholder/120/40" alt="SOGET Logo" />
+        <h2>Solutions d'emails professionnels</h2>
+    </header>
+    
+    <div class="container">
+        <h1>Générateur d'emails professionnels</h1>
+        
+        <div class="form-group">
+            <label for="subject">Sujet de l'email</label>
+            <input type="text" id="subject" placeholder="Ex: Proposition de collaboration sur le projet logistique">
+        </div>
+        
+        <div class="form-group">
+            <label for="recipient">Destinataire (nom et/ou fonction)</label>
+            <input type="text" id="recipient" placeholder="Ex: Jean Dupont, Directeur des Opérations">
+        </div>
+        
+        <div class="form-group">
+            <label for="objective">Objectif principal de l'email</label>
+            <input type="text" id="objective" placeholder="Ex: Proposer une rencontre pour discuter de notre solution">
+        </div>
+        
+        <div class="form-group">
+            <label for="key-points">Points essentiels à aborder (un par ligne)</label>
+            <textarea id="key-points" placeholder="Ex: 
+- Présentation de notre solution logistique
+- Avantages spécifiques pour votre entreprise
+- Disponibilité pour une démonstration"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="expected-action">Action attendue du destinataire</label>
+            <input type="text" id="expected-action" placeholder="Ex: Confirmer une date pour un rendez-vous téléphonique">
+        </div>
+        
+        <button id="generate-btn">Générer le prompt</button>
+        
+        <div class="result" id="result-container" style="display: none;">
+            <h3>Votre prompt optimisé</h3>
+            <pre id="prompt-result"></pre>
+            <button class="copy-btn" id="copy-btn">Copier le prompt</button>
+        </div>
+    </div>
+    
+    <footer>
+        © 2025 SOGET - Tous droits réservés
+    </footer>
+    
+    <script>
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            const subject = document.getElementById('subject').value || "[SUJET]";
+            const recipient = document.getElementById('recipient').value || "[NOM/FONCTION DU DESTINATAIRE]";
+            const objective = document.getElementById('objective').value || "[OBJECTIF]";
+            const keyPoints = document.getElementById('key-points').value || "[POINTS-CLÉS]";
+            const expectedAction = document.getElementById('expected-action').value || "[ACTION ATTENDUE]";
+            
+            const formattedKeyPoints = keyPoints.split('\n').map(point => point.trim()).filter(point => point).join('\n- ');
+            
+            const prompt = `Rédige un email professionnel en français sur le sujet suivant : ${subject}
+
+Contexte et informations clés :
+- Destinataire : ${recipient}
+- Objectif principal de l'email : ${objective}
+- Points essentiels à aborder : 
+- ${formattedKeyPoints}
+- Ton souhaité : professionnel, amical et assertif
+- Action attendue du destinataire : ${expectedAction}
+
+L'email doit être :
+- Parfaitement structuré avec introduction, corps et conclusion
+- Sans faute d'orthographe ou de grammaire
+- Clair et concis, facile à lire
+- Sans ambiguïté sur les messages et les attentes
+- Formulé avec assertivité et professionnalisme`;
+            
+            document.getElementById('prompt-result').textContent = prompt;
+            document.getElementById('result-container').style.display = 'block';
+        });
+        
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const promptText = document.getElementById('prompt-result').textContent;
+            navigator.clipboard.writeText(promptText).then(function() {
+                const copyBtn = document.getElementById('copy-btn');
+                copyBtn.textContent = 'Copié !';
+                setTimeout(function() {
+                    copyBtn.textContent = 'Copier le prompt';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

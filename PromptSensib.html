@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSense | Générateur de mails de sensibilisation</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #ecf0f1;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            padding-bottom: 2rem;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .intro {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 0.5rem;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .checkbox-item input {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .option-card {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-card:hover, .option-card.selected {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .option-card.selected {
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+        
+        .option-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .option-card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: var(--shadow);
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .result-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .result-body {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+        
+        .result pre {
+            white-space: pre-wrap;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            box-shadow: none;
+        }
+        
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 0.5rem;
+            cursor: help;
+        }
+        
+        .tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #bbb;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: normal;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                width: 95%;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">🔒</div>
+            <div>
+                <h1>CyberSense</h1>
+                <p class="tagline">Générez des emails de sensibilisation à la cybersécurité impactants</p>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="intro">
+            <p>Cet outil vous permet de générer des prompts optimisés pour créer des emails de sensibilisation à la cybersécurité personnalisés. Les emails générés s'appuieront sur les bonnes pratiques de l'ANSSI et d'autres sources fiables.</p>
+        </div>
+        
+        <div class="section">
+            <h2>1. Choisissez votre thématique</h2>
+            
+            <div class="options-grid">
+                <div class="option-card" data-theme="phishing">
+                    <h3>Phishing / Hameçonnage</h3>
+                    <p>Comment détecter et éviter les tentatives d'hameçonnage par email, SMS ou téléphone</p>
+                </div>
+                
+                <div class="option-card" data-theme="passwords">
+                    <h3>Mots de passe</h3>
+                    <p>Création et gestion de mots de passe forts, authentification à deux facteurs</p>
+                </div>
+                
+                <div class="option-card" data-theme="mobile">
+                    <h3>Sécurité mobile</h3>
+                    <p>Protection des smartphones et tablettes, applications sécurisées, Wi-Fi public</p>
+                </div>
+                
+                <div class="option-card" data-theme="social">
+                    <h3>Réseaux sociaux</h3>
+                    <p>Protection de la vie privée sur les réseaux sociaux, risques professionnels</p>
+                </div>
+                
+                <div class="option-card" data-theme="ransomware">
+                    <h3>Ransomware</h3>
+                    <p>Prévention et protection contre les logiciels de rançon</p>
+                </div>
+                
+                <div class="option-card" data-theme="custom">
+                    <h3>Thème personnalisé</h3>
+                    <p>Spécifiez votre propre thématique de sensibilisation</p>
+                </div>
+            </div>
+            
+            <div class="form-group" id="custom-theme-container" style="display: none; margin-top: 1.5rem;">
+                <label for="custom-theme">Votre thématique personnalisée</label>
+                <input type="text" id="custom-theme" placeholder="Ex: Protection des données en télétravail, USB sécurisé, etc.">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>2. Public cible</h2>
+            
+            <div class="form-group">
+                <label for="audience">À qui s'adresse ce message ?</label>
+                <select id="audience">
+                    <option value="general">Tous les collaborateurs</option>
+                    <option value="managers">Managers et cadres</option>
+                    <option value="it">Équipe informatique</option>
+                    <option value="remote">Télétravailleurs</option>
+                    <option value="new">Nouveaux arrivants</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tech-level">Niveau technique du public</label>
+                <select id="tech-level">
+                    <option value="basic">Débutant (peu de connaissances informatiques)</option>
+                    <option value="intermediate" selected>Intermédiaire (utilisateurs bureautiques classiques)</option>
+                    <option value="advanced">Avancé (bonne maîtrise des outils numériques)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>3. Contenu et format</h2>
+            
+            <div class="form-group">
+                <label>Éléments à inclure dans l'email</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="include-stats" checked>
+                        <label for="include-stats">Statistiques et faits</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="include-case" checked>
+                        <label for="include-case">Cas concret/Exemple</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="include-humor" checked>
+                        <label for="include-humor">Touches d'humour</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="include-visuals" checked>
+                        <label for="include-visuals">Suggestions d'éléments visuels</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="include-quiz" checked>
+                        <label for="include-quiz">Quiz ou test rapide</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="include-action" checked>
+                        <label for="include-action">Actions concrètes à réaliser</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="tone">Ton de la communication</label>
+                <select id="tone">
+                    <option value="friendly">Amical et engageant</option>
+                    <option value="informative">Informatif et éducatif</option>
+                    <option value="urgent">Alerte et urgent</option>
+                    <option value="humorous">Humoristique mais informatif</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="length">Longueur du message</label>
+                <select id="length">
+                    <option value="short">Court (lecture < 2 min)</option>
+                    <option value="medium" selected>Moyen (lecture 2-5 min)</option>
+                    <option value="long">Détaillé (lecture > 5 min)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="context">Contexte spécifique ou précisions (optionnel)</label>
+                <textarea id="context" placeholder="Ex: Cet email fait suite à une récente tentative de phishing dans l'entreprise. Nous souhaitons insister sur l'importance de signaler ces emails suspects."></textarea>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button id="generate-btn">Générer le prompt</button>
+        </div>
+        
+        <div class="result" id="result-container">
+            <div class="result-header">
+                <h3>Votre prompt optimisé</h3>
+                <button class="copy-btn" id="copy-btn">Copier</button>
+            </div>
+            <div class="result-body">
+                <pre id="prompt-result"></pre>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 CyberSense | En utilisant cet outil, consultez les ressources officielles de l'<a href="https://www.ssi.gouv.fr/" target="_blank">ANSSI</a> pour plus d'informations</p>
+    </footer>
+    
+    <script>
+        // Sélection de thème
+        const themeCards = document.querySelectorAll('.option-card');
+        const customThemeContainer = document.getElementById('custom-theme-container');
+        let selectedTheme = null;
+        
+        themeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Réinitialiser les autres cartes
+                themeCards.forEach(c => c.classList.remove('selected'));
+                
+                // Sélectionner la carte actuelle
+                this.classList.add('selected');
+                selectedTheme = this.getAttribute('data-theme');
+                
+                // Afficher le champ de thème personnalisé si nécessaire
+                if (selectedTheme === 'custom') {
+                    customThemeContainer.style.display = 'block';
+                } else {
+                    customThemeContainer.style.display = 'none';
+                }
+            });
+        });
+        
+        // Génération du prompt
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            if (!selectedTheme) {
+                alert('Veuillez sélectionner une thématique');
+                return;
+            }
+            
+            // Récupérer les données du formulaire
+            const audience = document.getElementById('audience').value;
+            const techLevel = document.getElementById('tech-level').value;
+            const tone = document.getElementById('tone').value;
+            const length = document.getElementById('length').value;
+            const context = document.getElementById('context').value.trim();
+            
+            // Récupérer les cases cochées
+            const includeStats = document.getElementById('include-stats').checked;
+            const includeCase = document.getElementById('include-case').checked;
+            const includeHumor = document.getElementById('include-humor').checked;
+            const includeVisuals = document.getElementById('include-visuals').checked;
+            const includeQuiz = document.getElementById('include-quiz').checked;
+            const includeAction = document.getElementById('include-action').checked;
+            
+            // Définir le thème à utiliser
+            let themeName = "";
+            if (selectedTheme === 'custom') {
+                themeName = document.getElementById('custom-theme').value.trim() || "cybersécurité personnalisé";
+            } else {
+                const themeLabels = {
+                    'phishing': "le phishing et l'hameçonnage",
+                    'passwords': "la gestion des mots de passe",
+                    'mobile': "la sécurité des appareils mobiles",
+                    'social': "la sécurité sur les réseaux sociaux",
+                    'ransomware': "les ransomwares et logiciels malveillants"
+                };
+                themeName = themeLabels[selectedTheme] || selectedTheme;
+            }
+            
+            // Construire le message de public cible
+            const audienceLabels = {
+                'general': "tous les collaborateurs de l'entreprise",
+                'managers': "les managers et cadres de l'entreprise",
+                'it': "l'équipe informatique",
+                'remote': "les collaborateurs en télétravail",
+                'new': "les nouveaux arrivants dans l'entreprise"
+            };
+            
+            const audienceText = audienceLabels[audience] || "les collaborateurs";
+            
+            // Construire le texte de niveau technique
+            const techLevelText = {
+                'basic': "avec peu de connaissances techniques",
+                'intermediate': "avec un niveau technique intermédiaire",
+                'advanced': "avec une bonne maîtrise des outils numériques"
+            }[techLevel] || "";
+            
+            // Construire la liste des éléments à inclure
+            let elementsToInclude = [];
+            if (includeStats) elementsToInclude.push("Des statistiques et faits récents sur le sujet");
+            if (includeCase) elementsToInclude.push("Un exemple concret ou un cas réel pour illustrer le propos");
+            if (includeHumor) elementsToInclude.push("Des touches d'humour appropriées pour rendre le message plus engageant");
+            if (includeVisuals) elementsToInclude.push("Des suggestions d'éléments visuels ou d'infographies à inclure");
+            if (includeQuiz) elementsToInclude.push("Un petit quiz ou test pour vérifier la compréhension");
+            if (includeAction) elementsToInclude.push("Des actions concrètes à mettre en œuvre immédiatement");
+            
+            const elementsText = elementsToInclude.map(item => `- ${item}`).join('\n');
+            
+            // Déterminer le ton
+            const toneText = {
+                'friendly': "amical et engageant, tout en restant professionnel",
+                'informative': "informatif et éducatif, avec un accent sur les faits",
+                'urgent': "alerte et urgent, soulignant l'importance du sujet",
+                'humorous': "léger et humoristique, tout en transmettant des informations sérieuses"
+            }[tone] || "professionnel et informatif";
+            
+            // Déterminer la longueur
+            const lengthText = {
+                'short': "court et concis (lecture en moins de 2 minutes)",
+                'medium': "de longueur moyenne (lecture en 2-5 minutes)",
+                'long': "détaillé et approfondi (lecture en plus de 5 minutes)"
+            }[length] || "de longueur moyenne";
+            
+            // Construire le prompt final
+            const prompt = `Rédige un email de sensibilisation à la cybersécurité sur le thème de ${themeName}, destiné à ${audienceText} ${techLevelText}.
+
+OBJECTIF:
+Créer un email informatif et engageant qui sensibilise les destinataires aux bonnes pratiques de sécurité concernant ${themeName}, en s'appuyant sur les recommandations de l'ANSSI (Agence Nationale de la Sécurité des Systèmes d'Information) et d'autres sources officielles.
+
+PUBLIC CIBLE:
+${audienceText.charAt(0).toUpperCase() + audienceText.slice(1)} ${techLevelText}.
+
+FORMAT ET STRUCTURE:
+- Un email ${lengthText}
+- Avec un objet accrocheur
+- Une introduction claire sur l'importance du sujet
+- Un corps de texte structuré avec des sections distinctes
+- Une conclusion avec un résumé des points clés
+- Une signature professionnelle
+
+ÉLÉMENTS À INCLURE:
+${elementsText}
+
+TON ET STYLE:
+Le ton doit être ${toneText}. Le contenu doit être facile à comprendre, accessible, et présenter des informations pratiques et utiles.
+
+SOURCES D'INFORMATION:
+Utilise les recommandations et bonnes pratiques de l'ANSSI, du CERT-FR, de la CNIL et d'autres autorités reconnues en matière de cybersécurité.
+
+INSTRUCTIONS SPÉCIFIQUES:
+- Recherche les recommandations officielles récentes concernant ${themeName}
+- Adapte le vocabulaire technique au niveau du public cible
+- Utilise des exemples concrets et relatable pour illustrer les points importants
+- Mets en évidence les comportements à risque et leurs alternatives sécurisées
+- Explique clairement les bénéfices de suivre ces bonnes pratiques
+- Fournis des ressources supplémentaires pour approfondir le sujet${context ? `\n\nCONTEXTE SPÉCIFIQUE:\n${context}` : ''}
+
+FORMAT DE L'EMAIL:
+- Objet: [proposition d'objet accrocheur]
+- Introduction
+- Corps de l'email (avec sous-sections pertinentes)
+- Actions recommandées
+- Conclusion
+- Signature
+
+L'email final doit être prêt à l'emploi pour une campagne de sensibilisation à la cybersécurité.`;
+
+            document.getElementById('prompt-result').textContent = prompt;
+            document.getElementById('result-container').style.display = 'block';
+            
+            // Faire défiler jusqu'au résultat
+            document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Fonctionnalité de copie
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const promptText = document.getElementById('prompt-result').textContent;
+            navigator.clipboard.writeText(promptText).then(function() {
+                const copyBtn = document.getElementById('copy-btn');
+                copyBtn.textContent = 'Copié ✓';
+                setTimeout(function() {
+                    copyBtn.textContent = 'Copier';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

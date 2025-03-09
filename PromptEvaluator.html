@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation SSI Fournisseur - ISO 27001:2022</title>
+    <style>
+        :root {
+            --primary-color: #0050A0;
+            --secondary-color: #E6F0FA;
+            --text-color: #333333;
+            --light-gray: #F5F5F5;
+            --border-color: #DDDDDD;
+            --success-color: #4CAF50;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        
+        .info-box {
+            background-color: var(--secondary-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .checkbox-item input {
+            width: auto;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #003d7a;
+        }
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--secondary-color);
+            border-radius: 4px;
+            border-left: 4px solid var(--primary-color);
+            display: none;
+        }
+        
+        .result pre {
+            white-space: pre-wrap;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            color: var(--text-color);
+        }
+        
+        .copy-btn {
+            margin-top: 1rem;
+            background-color: var(--text-color);
+        }
+        
+        .copy-btn:hover {
+            background-color: #222;
+        }
+        
+        footer {
+            background-color: var(--light-gray);
+            padding: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+        }
+        
+        .tooltip-icon {
+            background-color: var(--primary-color);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: #555;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: normal;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Évaluation SSI Fournisseur</h1>
+        <p>Générateur de prompt basé sur la norme ISO 27001:2022</p>
+    </header>
+    
+    <div class="container">
+        <div class="info-box">
+            <p>Cet outil vous permet de générer un prompt optimisé pour évaluer la sécurité des systèmes d'information d'un fournisseur selon les domaines de la norme ISO 27001:2022. Le prompt généré sera utilisable avec des assistants IA pour obtenir une analyse basée sur les informations publiques disponibles.</p>
+        </div>
+        
+        <div class="form-section">
+            <h2>Informations sur le fournisseur</h2>
+            
+            <div class="form-group">
+                <label for="company-name">Nom du fournisseur / éditeur</label>
+                <input type="text" id="company-name" placeholder="Ex: Microsoft, SAP, AWS, etc.">
+            </div>
+            
+            <div class="form-group">
+                <label for="product-service">Produit ou service concerné (optionnel)</label>
+                <input type="text" id="product-service" placeholder="Ex: Azure, S/4HANA, EC2, etc.">
+            </div>
+            
+            <div class="form-group">
+                <label for="context">Contexte de l'évaluation</label>
+                <textarea id="context" placeholder="Ex: Nous envisageons d'utiliser ce fournisseur pour héberger des données sensibles de notre entreprise. Nous souhaitons évaluer sa maturité en matière de sécurité."></textarea>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Domaines ISO 27001:2022 à évaluer</h2>
+            <p>Sélectionnez les domaines de contrôle que vous souhaitez intégrer dans votre évaluation :</p>
+            
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-5" checked>
+                    <label for="domain-5">5. Politiques de sécurité de l'information</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Politique de sécurité de l'information et sa revue</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-6" checked>
+                    <label for="domain-6">6. Organisation de la sécurité</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Organisation interne, rôles et responsabilités, séparation des tâches</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-7" checked>
+                    <label for="domain-7">7. Sécurité des ressources humaines</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Vérifications, sensibilisation, formations, sanctions</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-8" checked>
+                    <label for="domain-8">8. Gestion des actifs</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Inventaire, propriété, classification, supports</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-9" checked>
+                    <label for="domain-9">9. Contrôle d'accès</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Politique d'accès, gestion des accès utilisateurs, responsabilités</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-10" checked>
+                    <label for="domain-10">10. Cryptographie</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Politique de contrôles cryptographiques, gestion des clés</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-11" checked>
+                    <label for="domain-11">11. Sécurité physique et environnementale</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Zones sécurisées, équipements, bureaux, postes vacants</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-12" checked>
+                    <label for="domain-12">12. Sécurité liée à l'exploitation</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Procédures documentées, gestion des changements, capacités, codes malveillants</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-13" checked>
+                    <label for="domain-13">13. Sécurité des communications</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Gestion de la sécurité des réseaux, transfert d'information</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-14" checked>
+                    <label for="domain-14">14. Acquisition, développement et maintenance</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Exigences de sécurité, développement sécurisé, données de test</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-15" checked>
+                    <label for="domain-15">15. Relations avec les fournisseurs</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Politique de sécurité, contrats, chaîne d'approvisionnement</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-16" checked>
+                    <label for="domain-16">16. Gestion des incidents</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Responsabilités, signalement, évaluation, apprentissage</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-17" checked>
+                    <label for="domain-17">17. Continuité d'activité</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Planification, mise en œuvre, vérification, disponibilité</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="domain-18" checked>
+                    <label for="domain-18">18. Conformité</label>
+                    <div class="tooltip">
+                        <div class="tooltip-icon">?</div>
+                        <span class="tooltip-text">Exigences légales, réglementaires, contractuelles, confidentialité, revue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Options supplémentaires</h2>
+            
+            <div class="form-group">
+                <label for="certifications">Certifications connues (optionnel)</label>
+                <input type="text" id="certifications" placeholder="Ex: ISO 27001, SOC 2, PCI DSS...">
+            </div>
+            
+            <div class="form-group">
+                <label for="specific-requirements">Exigences spécifiques (optionnel)</label>
+                <textarea id="specific-requirements" placeholder="Ex: Nous sommes particulièrement intéressés par la façon dont ce fournisseur gère le chiffrement des données au repos et en transit."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="output-format">Format du rapport souhaité</label>
+                <select id="output-format">
+                    <option value="detailed">Rapport détaillé</option>
+                    <option value="summary">Résumé exécutif</option>
+                    <option value="scorecard">Tableau de notation</option>
+                </select>
+            </div>
+        </div>
+        
+        <button id="generate-btn">Générer le prompt d'évaluation SSI</button>
+        
+        <div class="result" id="result-container">
+            <h3>Votre prompt d'évaluation SSI</h3>
+            <pre id="prompt-result"></pre>
+            <button class="copy-btn" id="copy-btn">Copier le prompt</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 - Générateur de prompt pour évaluation SSI selon ISO 27001:2022</p>
+    </footer>
+    
+    <script>
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            const companyName = document.getElementById('company-name').value.trim() || "[NOM DU FOURNISSEUR]";
+            const productService = document.getElementById('product-service').value.trim();
+            const context = document.getElementById('context').value.trim() || "Évaluation de la maturité SSI dans le cadre d'une analyse de risque fournisseur";
+            const certifications = document.getElementById('certifications').value.trim();
+            const specificRequirements = document.getElementById('specific-requirements').value.trim();
+            const outputFormat = document.getElementById('output-format').value;
+            
+            // Collecter les domaines sélectionnés
+            const selectedDomains = [];
+            for (let i = 5; i <= 18; i++) {
+                if (document.getElementById(`domain-${i}`).checked) {
+                    selectedDomains.push(i);
+                }
+            }
+            
+            // Construire les détails des domaines sélectionnés
+            let domainsText = "";
+            if (selectedDomains.includes(5)) domainsText += "- 5. Politiques de sécurité de l'information\n";
+            if (selectedDomains.includes(6)) domainsText += "- 6. Organisation de la sécurité de l'information\n";
+            if (selectedDomains.includes(7)) domainsText += "- 7. Sécurité des ressources humaines\n";
+            if (selectedDomains.includes(8)) domainsText += "- 8. Gestion des actifs\n";
+            if (selectedDomains.includes(9)) domainsText += "- 9. Contrôle d'accès\n";
+            if (selectedDomains.includes(10)) domainsText += "- 10. Cryptographie\n";
+            if (selectedDomains.includes(11)) domainsText += "- 11. Sécurité physique et environnementale\n";
+            if (selectedDomains.includes(12)) domainsText += "- 12. Sécurité liée à l'exploitation\n";
+            if (selectedDomains.includes(13)) domainsText += "- 13. Sécurité des communications\n";
+            if (selectedDomains.includes(14)) domainsText += "- 14. Acquisition, développement et maintenance des systèmes\n";
+            if (selectedDomains.includes(15)) domainsText += "- 15. Relations avec les fournisseurs\n";
+            if (selectedDomains.includes(16)) domainsText += "- 16. Gestion des incidents de sécurité de l'information\n";
+            if (selectedDomains.includes(17)) domainsText += "- 17. Aspects de la sécurité de l'information dans la gestion de la continuité\n";
+            if (selectedDomains.includes(18)) domainsText += "- 18. Conformité\n";
+            
+            // Format de sortie
+            let formatDescription = "";
+            switch(outputFormat) {
+                case "detailed":
+                    formatDescription = "Rapport détaillé analysant en profondeur chaque domaine ISO 27001 sélectionné";
+                    break;
+                case "summary":
+                    formatDescription = "Résumé exécutif mettant en évidence les principales forces et faiblesses";
+                    break;
+                case "scorecard":
+                    formatDescription = "Tableau de notation avec évaluation (Faible/Moyen/Élevé) pour chaque domaine";
+                    break;
+            }
+            
+            // Construire le prompt
+            let prompt = `Réalise une évaluation de la sécurité des systèmes d'information (SSI) du fournisseur ${companyName}`;
+            
+            if (productService) {
+                prompt += ` concernant spécifiquement ${productService}`;
+            }
+            
+            prompt += ` selon les exigences de la norme ISO 27001:2022.
+
+CONTEXTE:
+${context}
+
+OBJECTIF:
+Analyser comment ce fournisseur répond aux exigences de sécurité de l'information en se basant sur les informations publiquement disponibles (site web, politiques publiées, rapports annuels, communiqués de presse, commentaires d'experts, certifications).
+
+DOMAINES ISO 27001:2022 À ÉVALUER:
+${domainsText}
+`;
+
+            if (certifications) {
+                prompt += `
+CERTIFICATIONS CONNUES:
+${certifications}
+`;
+            }
+
+            if (specificRequirements) {
+                prompt += `
+EXIGENCES SPÉCIFIQUES:
+${specificRequirements}
+`;
+            }
+
+            prompt += `
+FORMAT DE SORTIE:
+${formatDescription}
+
+INSTRUCTIONS:
+1. Effectue des recherches sur les sources publiques d'information concernant la sécurité de l'information chez ${companyName}
+2. Pour chaque domaine ISO 27001 sélectionné, identifie:
+   - Les mesures mises en place par le fournisseur
+   - Les forces évidentes dans leur approche
+   - Les éventuelles lacunes ou zones d'amélioration
+   - Le niveau de conformité apparent (élevé, moyen, faible)
+3. Évalue la transparence du fournisseur concernant ses pratiques de sécurité
+4. Mentionne les certifications pertinentes et leur validité
+5. Inclus des sources d'information spécifiques lorsque disponibles
+6. Conclus par une évaluation globale de la maturité SSI
+
+L'évaluation doit être objective, factuelle et basée uniquement sur des informations publiquement vérifiables.`;
+
+            document.getElementById('prompt-result').textContent = prompt;
+            document.getElementById('result-container').style.display = 'block';
+            
+            // Faire défiler jusqu'au résultat
+            document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const promptText = document.getElementById('prompt-result').textContent;
+            navigator.clipboard.writeText(promptText).then(function() {
+                const copyBtn = document.getElementById('copy-btn');
+                copyBtn.textContent = 'Copié !';
+                setTimeout(function() {
+                    copyBtn.textContent = 'Copier le prompt';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
